@@ -458,7 +458,11 @@ function nextVNDialog() {
 document.addEventListener('DOMContentLoaded', function() {
     // Определяем тип страницы
     const isWelcomePage = window.location.pathname.includes('welcome.html');
-    const isMainPage = window.location.pathname.endsWith('index.html') || window.location.pathname === '/';
+    const isMainPage = window.location.pathname.endsWith('index.html') ||
+                       window.location.pathname === '/' ||
+                       window.location.pathname.endsWith('/') ||
+                       window.location.pathname === '' ||
+                       !window.location.pathname.includes('.html');
     
     if (isMainPage || isWelcomePage) {
         vnDialogSystem = new VNDialogSystem();
