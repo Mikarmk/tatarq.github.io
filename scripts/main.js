@@ -226,7 +226,21 @@ function goBack() {
 
 function goToNext(nextPage) {
     if (nextPage) {
-        window.location.href = nextPage;
+        // Нормализуем путь для корректной работы при деплое
+        let normalizedPath = nextPage;
+        
+        // Если путь начинается с ../pages/, убираем это
+        if (normalizedPath.startsWith('../pages/')) {
+            normalizedPath = normalizedPath.replace('../pages/', '');
+        }
+        
+        // Если мы находимся в папке pages, добавляем только имя файла
+        if (window.location.pathname.includes('/pages/')) {
+            window.location.href = normalizedPath;
+        } else {
+            // Если мы на главной странице, добавляем pages/
+            window.location.href = `pages/${normalizedPath}`;
+        }
     }
 }
 
@@ -328,7 +342,7 @@ class VNDialogSystem {
                     const nextBtn = document.getElementById('vn-next-btn');
                     if (nextBtn) {
                         nextBtn.textContent = 'К холодильнику!';
-                        nextBtn.onclick = () => goToNext('../pages/refrigerator.html');
+                        nextBtn.onclick = () => goToNext('refrigerator.html');
                     }
                 }
             }
