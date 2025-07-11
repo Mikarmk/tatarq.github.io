@@ -466,3 +466,221 @@ body {
 body:not([style*="background-image"]) {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
+
+/* Стили для диалоговой системы в стиле визуальной новеллы */
+.vn-container {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.vn-character {
+    position: absolute;
+    bottom: 0;
+    right: 10%;
+    width: 500px;
+    height: auto;
+    z-index: 2;
+    transition: all 0.5s ease;
+    filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.3));
+}
+
+.vn-character img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+.vn-character.speaking {
+    filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.3)) brightness(1.1);
+    transform: scale(1.02);
+}
+
+.vn-dialog-box {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(10px);
+    border-top: 3px solid #74b9ff;
+    padding: 30px 40px;
+    z-index: 10;
+    min-height: 180px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    animation: slideUpDialog 0.5s ease-out;
+}
+
+.vn-speaker-name {
+    color: #74b9ff;
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.vn-dialog-text {
+    color: #ffffff;
+    font-size: 1.2rem;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+}
+
+.vn-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.vn-continue-hint {
+    color: #74b9ff;
+    font-size: 0.9rem;
+    opacity: 0.8;
+    animation: pulse 2s infinite;
+}
+
+.vn-next-button {
+    background: linear-gradient(45deg, #74b9ff, #0984e3);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 25px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(116, 185, 255, 0.3);
+}
+
+.vn-next-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(116, 185, 255, 0.4);
+}
+
+.vn-next-button:active {
+    transform: translateY(0);
+}
+
+.vn-skip-button {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.vn-skip-button:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Анимация печатающегося текста */
+.vn-dialog-text.typing {
+    overflow: hidden;
+}
+
+.vn-dialog-text.typing::after {
+    content: '|';
+    animation: blink 1s infinite;
+    color: #74b9ff;
+}
+
+/* Анимации для VN */
+@keyframes slideUpDialog {
+    from {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 0.8;
+    }
+    50% {
+        opacity: 0.4;
+    }
+}
+
+@keyframes blink {
+    0%, 50% {
+        opacity: 1;
+    }
+    51%, 100% {
+        opacity: 0;
+    }
+}
+
+/* Адаптивность для VN */
+@media (max-width: 768px) {
+    .vn-character {
+        width: 400px;
+        right: 5%;
+    }
+    
+    .vn-dialog-box {
+        padding: 20px 25px;
+        min-height: 160px;
+    }
+    
+    .vn-speaker-name {
+        font-size: 1.1rem;
+    }
+    
+    .vn-dialog-text {
+        font-size: 1rem;
+        min-height: 50px;
+    }
+    
+    .vn-controls {
+        flex-direction: column;
+        gap: 10px;
+        align-items: stretch;
+    }
+    
+    .vn-continue-hint {
+        text-align: center;
+        order: 1;
+    }
+    
+    .vn-next-button {
+        order: 2;
+    }
+}
+
+@media (max-width: 480px) {
+    .vn-character {
+        width: 320px;
+        right: 2%;
+    }
+    
+    .vn-dialog-box {
+        padding: 15px 20px;
+        min-height: 140px;
+    }
+    
+    .vn-speaker-name {
+        font-size: 1rem;
+    }
+    
+    .vn-dialog-text {
+        font-size: 0.95rem;
+        min-height: 45px;
+    }
+}

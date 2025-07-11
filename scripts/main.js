@@ -265,3 +265,189 @@ function initPageSpecific() {
 
 // Вызываем инициализацию при загрузке каждой страницы
 document.addEventListener('DOMContentLoaded', initPageSpecific);
+
+// Система диалогов в стиле визуальной новеллы
+class VNDialogSystem {
+    constructor() {
+        this.currentDialog = 0;
+        this.dialogs = [];
+        this.isTyping = false;
+        this.typewriterSpeed = 50; // миллисекунды между символами
+        this.autoAdvance = false;
+    }
+
+    // Инициализация диалогов для главной страницы
+    initMainPageDialogs() {
+        this.dialogs = [
+            {
+                speaker: "Бабушка Фатима",
+                text: "Салам алейкум! Я бабушка Фатима, и сегодня я научу вас готовить настоящие татарские блюда!",
+                action: null
+            },
+            {
+                speaker: "Бабушка Фатима",
+                text: "Мы приготовим четыре традиционных блюда: эчпочмак, кыстыбый, чак-чак и татарский чай.",
+                action: null
+            },
+            {
+                speaker: "Бабушка Фатима",
+                text: "Каждое блюдо имеет свою историю и особенности приготовления. Готовы начать наш мастер-класс?",
+                action: () => {
+                    const nextBtn = document.getElementById('vn-next-btn');
+                    if (nextBtn) {
+                        nextBtn.textContent = 'Начать мастер-класс';
+                        nextBtn.onclick = () => startGame();
+                    }
+                }
+            }
+        ];
+    }
+
+    // Инициализация диалогов для страницы welcome
+    initWelcomePageDialogs() {
+        this.dialogs = [
+            {
+                speaker: "Бабушка Фатима",
+                text: "Салам алейкум, дорогой! Меня зовут Фатима, и я научу тебя готовить настоящие татарские блюда. Моя семья передавала эти рецепты из поколения в поколение уже более 200 лет!",
+                action: null
+            },
+            {
+                speaker: "Бабушка Фатима",
+                text: "Сегодня мы приготовим четыре традиционных блюда: эчпочмак, кыстыбый, чак-чак и татарский чай. Каждое блюдо имеет свою историю и особенности приготовления.",
+                action: null
+            },
+            {
+                speaker: "Бабушка Фатима",
+                text: "Но сначала нам нужно собрать все необходимые продукты. Пойдём к холодильнику и посмотрим, что у нас есть!",
+                action: null
+            },
+            {
+                speaker: "Бабушка Фатима",
+                text: "Помни, дорогой: в татарской кухне главное - это любовь к семье и уважение к традициям. Готовить нужно с душой!",
+                action: () => {
+                    const nextBtn = document.getElementById('vn-next-btn');
+                    if (nextBtn) {
+                        nextBtn.textContent = 'К холодильнику!';
+                        nextBtn.onclick = () => goToNext('../pages/refrigerator.html');
+                    }
+                }
+            }
+        ];
+    }
+
+    // Эффект печатающегося текста
+    typewriterEffect(element, text, callback) {
+        this.isTyping = true;
+        element.textContent = '';
+        element.classList.add('typing');
+        
+        let i = 0;
+        const timer = setInterval(() => {
+            if (i < text.length) {
+                element.textContent += text.charAt(i);
+                i++;
+            } else {
+                clearInterval(timer);
+                element.classList.remove('typing');
+                this.isTyping = false;
+                if (callback) callback();
+            }
+        }, this.typewriterSpeed);
+    }
+
+    // Переход к следующему диалогу
+    nextDialog() {
+        if (this.isTyping) {
+            // Если текст ещё печатается, завершаем его мгновенно
+            this.skipTypewriter();
+            return;
+        }
+
+        this.currentDialog++;
+        
+        if (this.currentDialog < this.dialogs.length) {
+            const dialog = this.dialogs[this.currentDialog];
+            this.showDialog(dialog);
+            this.updateProgress();
+        }
+    }
+
+    // Показ диалога
+    showDialog(dialog) {
+        const speakerElement = document.getElementById('vn-speaker');
+        const textElement = document.getElementById('vn-text');
+        
+        if (speakerElement) {
+            speakerElement.textContent = dialog.speaker;
+        }
+        
+        if (textElement) {
+            this.typewriterEffect(textElement, dialog.text, () => {
+                if (dialog.action) {
+                    dialog.action();
+                }
+            });
+        }
+    }
+
+    // Пропуск эффекта печатания
+    skipTypewriter() {
+        const textElement = document.getElementById('vn-text');
+        if (textElement && this.isTyping) {
+            const currentDialog = this.dialogs[this.currentDialog];
+            textElement.textContent = currentDialog.text;
+            textElement.classList.remove('typing');
+            this.isTyping = false;
+            
+            if (currentDialog.action) {
+                currentDialog.action();
+            }
+        }
+    }
+
+    // Обновление прогресса
+    updateProgress() {
+        const progressElement = document.getElementById('progress-fill');
+        if (progressElement && this.dialogs.length > 0) {
+            const percentage = ((this.currentDialog + 1) / this.dialogs.length) * 100;
+            progressElement.style.width = percentage + '%';
+        }
+    }
+
+    // Инициализация системы
+    init(pageType = 'main') {
+        if (pageType === 'welcome') {
+            this.initWelcomePageDialogs();
+        } else {
+            this.initMainPageDialogs();
+        }
+        
+        // Показываем первый диалог
+        if (this.dialogs.length > 0) {
+            this.showDialog(this.dialogs[0]);
+            this.updateProgress();
+        }
+    }
+}
+
+// Глобальный экземпляр системы диалогов
+let vnDialogSystem;
+
+// Функция для следующего диалога (вызывается из HTML)
+function nextVNDialog() {
+    if (vnDialogSystem) {
+        vnDialogSystem.nextDialog();
+    }
+}
+
+// Инициализация VN системы при загрузке страницы
+document.addEventListener('DOMContentLoaded', function() {
+    // Определяем тип страницы
+    const isWelcomePage = window.location.pathname.includes('welcome.html');
+    const isMainPage = window.location.pathname.endsWith('index.html') || window.location.pathname === '/';
+    
+    if (isMainPage || isWelcomePage) {
+        vnDialogSystem = new VNDialogSystem();
+        vnDialogSystem.init(isWelcomePage ? 'welcome' : 'main');
+    }
+});

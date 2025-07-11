@@ -7,54 +7,19 @@
     <link rel="stylesheet" href="styles/main.css">
 </head>
 <body>
-    <div class="game-container">
-        <div class="background-overlay"></div>
+    <div class="vn-container" style="background-image: url('images/home.png');">
+        <div class="vn-character speaking">
+            <img src="images/grandmother.png" alt="Бабушка Фатима" id="grandmother-img">
+        </div>
         
-        <div class="main-content">
-            <div class="grandmother-section">
-                <div class="grandmother-image">
-                    <img src="images/grandmother.png" alt="Бабушка Фатима" id="grandmother-img">
-                </div>
-                <div class="speech-bubble">
-                    <div class="bubble-content">
-                        <h1 class="welcome-title">Добро пожаловать!</h1>
-                        <p class="welcome-text">Салам алейкум! Я бабушка Фатима, и сегодня я научу вас готовить настоящие татарские блюда!</p>
-                    </div>
-                    <div class="bubble-tail"></div>
-                </div>
+        <div class="vn-dialog-box" id="vn-dialog">
+            <div class="vn-speaker-name" id="vn-speaker">Бабушка Фатима</div>
+            <div class="vn-dialog-text" id="vn-text">
+                Салам алейкум! Я бабушка Фатима, и сегодня я научу вас готовить настоящие татарские блюда!
             </div>
-            
-            <div class="dishes-showcase">
-                <h2 class="dishes-title">Что мы будем готовить:</h2>
-                <div class="dishes-grid">
-                    <div class="dish-card">
-                        <div class="dish-icon">🥟</div>
-                        <h3>Эчпочмак</h3>
-                        <p>Треугольные пирожки с мясом и картофелем</p>
-                    </div>
-                    <div class="dish-card">
-                        <div class="dish-icon">🫓</div>
-                        <h3>Кыстыбый</h3>
-                        <p>Лепёшка с картофельным пюре</p>
-                    </div>
-                    <div class="dish-card">
-                        <div class="dish-icon">🍯</div>
-                        <h3>Чак-чак</h3>
-                        <p>Сладкий десерт из теста и мёда</p>
-                    </div>
-                    <div class="dish-card">
-                        <div class="dish-icon">🫖</div>
-                        <h3>Татарский чай</h3>
-                        <p>Ароматный чай с молоком и вареньем</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="start-section">
-                <button class="start-button" onclick="startGame()">
-                    <span class="button-text">Начать мастер-класс</span>
-                    <span class="button-icon">👩‍🍳</span>
-                </button>
+            <div class="vn-controls">
+                <div class="vn-continue-hint">Нажмите "Далее" чтобы продолжить</div>
+                <button class="vn-next-button" onclick="nextVNDialog()" id="vn-next-btn">Далее</button>
             </div>
         </div>
     </div>
