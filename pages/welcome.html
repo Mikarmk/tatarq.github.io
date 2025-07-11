@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Добро пожаловать - Татарский мастер-класс</title>
+    <link rel="stylesheet" href="../styles/main.css">
+</head>
+<body>
+    <div class="game-container">
+        <div class="game-screen">
+            <h1 class="screen-title">Добро пожаловать в татарскую кухню!</h1>
+            
+            <div class="character-dialog">
+                <div class="character-avatar">👵🏻</div>
+                <div class="dialog-text">
+                    <p><strong>Бабушка Фатима:</strong></p>
+                    <p id="dialog-content">Салам алейкум, дорогой! Меня зовут Фатима, и я научу тебя готовить настоящие татарские блюда. 
+                    Моя семья передавала эти рецепты из поколения в поколение уже более 200 лет!</p>
+                </div>
+            </div>
+            
+            <div class="dialog-controls">
+                <button class="next-button" onclick="nextDialog()">Далее</button>
+            </div>
+            
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 5%;"></div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="../scripts/main.js"></script>
+    <script>
+        let currentDialog = 0;
+        const dialogs = [
+            {
+                text: "Салам алейкум, дорогой! Меня зовут Фатима, и я научу тебя готовить настоящие татарские блюда. Моя семья передавала эти рецепты из поколения в поколение уже более 200 лет!",
+                speaker: "Бабушка Фатима"
+            },
+            {
+                text: "Сегодня мы приготовим четыре традиционных блюда: эчпочмак, кыстыбый, чак-чак и татарский чай. Каждое блюдо имеет свою историю и особенности приготовления.",
+                speaker: "Бабушка Фатима"
+            },
+            {
+                text: "Но сначала нам нужно собрать все необходимые продукты. Пойдём к холодильнику и посмотрим, что у нас есть!",
+                speaker: "Бабушка Фатима"
+            },
+            {
+                text: "Помни, дорогой: в татарской кухне главное - это любовь к семье и уважение к традициям. Готовить нужно с душой!",
+                speaker: "Бабушка Фатима"
+            }
+        ];
+
+        function nextDialog() {
+            currentDialog++;
+            
+            if (currentDialog < dialogs.length) {
+                const dialog = dialogs[currentDialog];
+                const dialogContent = document.getElementById('dialog-content');
+                
+                // Анимация смены текста
+                dialogContent.style.opacity = '0';
+                setTimeout(() => {
+                    dialogContent.innerHTML = `<p><strong>${dialog.speaker}:</strong></p><p>${dialog.text}</p>`;
+                    dialogContent.style.opacity = '1';
+                }, 300);
+                
+                // Обновляем прогресс
+                updateProgressBar(currentDialog + 1, dialogs.length);
+                
+                // На последнем диалоге меняем кнопку
+                if (currentDialog === dialogs.length - 1) {
+                    const nextButton = document.querySelector('.next-button');
+                    nextButton.textContent = 'К холодильнику!';
+                    nextButton.onclick = () => goToNext('../pages/refrigerator.html');
+                }
+            }
+        }
+
+        // Добавляем стили для плавной смены текста
+        document.addEventListener('DOMContentLoaded', function() {
+            const dialogContent = document.getElementById('dialog-content');
+            dialogContent.style.transition = 'opacity 0.3s ease';
+        });
+    </script>
+</body>
+</html>
